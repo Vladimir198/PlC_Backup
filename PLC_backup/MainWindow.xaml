@@ -5,15 +5,55 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PLC_backup"
         mc:Ignorable="d"
-        Title="PLC backup" Height="450" Width="800">
+        Title="PLC backup" Height="520.551" Width="689.513" >
     <Grid>
-        <DataGrid Margin="10,50,10,10" AutoGenerateColumns="False">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25*"/>
+            <ColumnDefinition Width="15*"/>
+        </Grid.ColumnDefinitions>
+        <DataGrid x:Name="dg_dbbloks" Margin="10,10,10,10" 
+                  AutoGenerateColumns="False" 
+                  CanUserAddRows="False" 
+                  CanUserDeleteRows="True"
+                  IsReadOnly="True"
+                  SelectionChanged="dg_dbbloks_SelectionChanged"
+                  Grid.Column="0">
             <DataGrid.DataContext>
                 <local:DataBlock/>
             </DataGrid.DataContext>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Имя" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Номер блока" Binding="{Binding Number}"/>
+                <DataGridTextColumn Header="Размер в байтах" Binding="{Binding Size}"/>
             </DataGrid.Columns>
         </DataGrid>
+        <GroupBox Grid.Column="1" Header="Дата блок" HorizontalAlignment="Left" Height="171" Margin="10,11,0,0" VerticalAlignment="Top" Width="237">
+            <Grid>
+                <TextBox x:Name="tb_name" HorizontalAlignment="Left" Height="23" Margin="98,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" KeyDown="tb_number_KeyDown"/>
+                <Label Content="Имя блока:" HorizontalAlignment="Left" Margin="8,9,0,0" VerticalAlignment="Top"/>
+                <TextBox x:Name="tb_number" HorizontalAlignment="Left" Height="23" Margin="98,43,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" KeyDown="tb_number_KeyDown"/>
+                <Label Content="Номер блока:" HorizontalAlignment="Left" Margin="8,40,0,0" VerticalAlignment="Top"/>
+                <TextBox x:Name="tb_size" HorizontalAlignment="Left" Height="23" Margin="98,77,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" KeyDown="tb_number_KeyDown"/>
+                <Label Content="Размер блока:" HorizontalAlignment="Left" Margin="8,75,0,0" VerticalAlignment="Top"/>
+                <Button x:Name="btn_add" Margin="5,0,0,5" Content="Добавить" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="20" Width="60" Click="btn_add_Click"/>
+                <Button x:Name="btn_cancel" Margin="150,0,0,5" Content="Отмена" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="20" Width="60" Click="btn_cancel_Click"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Column="1" Header="Подключение" HorizontalAlignment="Left" Height="180" Margin="10,192,0,0" VerticalAlignment="Top" Width="237">
+            <Grid>
+                <TextBox x:Name="tb_ip" HorizontalAlignment="Left" Height="23" Margin="70,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140" KeyDown="tb_number_KeyDown"/>
+                <Label Content="IP:" HorizontalAlignment="Left" Margin="8,9,0,0" VerticalAlignment="Top"/>
+                <TextBox x:Name="tb_rack" HorizontalAlignment="Left" Height="23" Margin="70,43,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140" KeyDown="tb_number_KeyDown"/>
+                <Label Content="Rack:" HorizontalAlignment="Left" Margin="8,40,0,0" VerticalAlignment="Top"/>
+                <TextBox x:Name="tb_slot" HorizontalAlignment="Left" Height="23" Margin="70,77,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140" KeyDown="tb_number_KeyDown"/>
+                <Label Content="Слот:" HorizontalAlignment="Left" Margin="8,75,0,0" VerticalAlignment="Top"/>
+                <ComboBox x:Name="cmb_cpy_type" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,110,0,0" Width="140" Height="25" SelectionChanged="cmb_cpy_type_SelectionChanged"/>
+                <Label Content="Тип cpu:" HorizontalAlignment="Left" Margin="8,107,0,0" VerticalAlignment="Top"/>
+            </Grid>
+        </GroupBox>
+
+        <Button x:Name="btn_open" Margin="10,0,0,50" Content="Загрузить" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="20" Width="60" Grid.Column="1" Click="btn_open_Click"/>
+        <Button x:Name="btn_save" Margin="90,10,0,50" Content="Сохранить" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="20" Width="65" Grid.Column="1" Click="btn_save_Click"/>
+        <Button x:Name="btn_backup" Content="Сделпть бэкап" Margin="30,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="25" Width="100" Grid.Column="1" Click="btn_backup_Click" />
     </Grid>
 </Window>
