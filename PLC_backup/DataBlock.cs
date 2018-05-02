@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 
 namespace PLC_backup
 {
+    [Serializable]
     [DataContract]
     class DataBlock
     {

@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using Microsoft.Win32;
 using System.Runtime.Serialization.Json;
 using S7.Net;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace PLC_backup
 {
@@ -16,7 +17,6 @@ namespace PLC_backup
     /// </summary>
     public partial class MainWindow : Window
     {
-        //ObservableCollection<DataBlock> _dataBlocks;
         DataBlock _datablock;
         Prop _prop;
         public MainWindow()
@@ -24,7 +24,6 @@ namespace PLC_backup
             InitializeComponent();
             _prop = new Prop();
 
-            //_dataBlocks = new ObservableCollection<DataBlock>();
             _datablock = new DataBlock();
             if (File.Exists(Properties.Settings.Default.Path))
             {
@@ -218,15 +217,35 @@ namespace PLC_backup
             savePLC.CheckPathExists = true;
             if (savePLC.ShowDialog() == true)
             {
-
+                //SavePLCToBinary(savePLC.FileName);
+                ReadFromPLC();
+                SaveDataToFile(savePLC.FileName);
             }
         }
 
-        private bool SavePLCToBinary(string path)
-        {
-            bool result = false;
+        //private bool SavePLCToBinary(string path)
+        //{
+        //    bool result = false;
+        //    using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+        //    {
+        //        int count = GetBynarySize();
+        //        ReadFromPLC();
+        //        //byte[] data = DataBloksToBynary();
+        //        //fs.Write(data, 0, count);
+        //        result = true;
+        //    }
+        //    return result;
+        //}
 
-            return result;
+        private void SaveDataToFile(string path)
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+            {
+                // сериализуем весь массив people
+                formatter.Serialize(fs, _prop);
+            }
         }
 
         private bool ReadFromPLC()
@@ -275,5 +294,57 @@ namespace PLC_backup
         {
             _prop.CpuType = (CpuType)cmb_cpy_type.SelectedItem;
         }
+
+        private void btn_restore_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFile = new OpenFileDialog();
+            openFile.Filter = "bin| *.bin";
+            openFile.CheckFileExists = true;
+            openFile.CheckPathExists = true;
+            if (openFile.ShowDialog() == true)
+            {
+                GetDataFromFile(openFile.FileName);
+                WritePLC();
+                SourceConection();
+            }
+        }
+
+        private void GetDataFromFile(string path)
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            _prop = new Prop();
+            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+            {
+                _prop = (Prop)formatter.Deserialize(fs);
+            }
+        }
+
+        private bool WritePLC()
+        {
+            bool result = false;
+
+            if (_prop.DataBlocks.Count == 0)
+            {
+                return result;
+            }
+            
+            Plc plc = new Plc(_prop.CpuType, _prop.Ip, _prop.Rack, _prop.Slot);
+
+            ErrorCode[] ec = new ErrorCode[_prop.DataBlocks.Count-1];
+            int i = 0;
+            if (!plc.IsConnected)
+            {
+                MessageBox.Show("Нет подключения к plc!");
+                return result;
+            }
+            foreach (var db in _prop.DataBlocks)
+            {
+                ec[i] = plc.WriteBytes(DataType.DataBlock, db.Number, 0, db.Data);
+                i++;
+            }
+
+            return result;
+        }
+
     }
 }

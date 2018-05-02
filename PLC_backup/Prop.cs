@@ -1,11 +1,13 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 using S7.Net;
 
 namespace PLC_backup
 {
+    [Serializable]
     [DataContract]
-    class Prop
+     class Prop
     {
         [DataMember]
         public string Ip { get; set; }

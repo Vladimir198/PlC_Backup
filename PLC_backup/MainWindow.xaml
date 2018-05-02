@@ -52,8 +52,9 @@
             </Grid>
         </GroupBox>
 
-        <Button x:Name="btn_open" Margin="10,0,0,50" Content="Загрузить" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="20" Width="60" Grid.Column="1" Click="btn_open_Click"/>
-        <Button x:Name="btn_save" Margin="90,10,0,50" Content="Сохранить" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="20" Width="65" Grid.Column="1" Click="btn_save_Click"/>
-        <Button x:Name="btn_backup" Content="Сделпть бэкап" Margin="30,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="25" Width="100" Grid.Column="1" Click="btn_backup_Click" />
+        <Button x:Name="btn_open" Margin="10,0,0,90" Content="Загрузить" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="20" Width="60" Grid.Column="1" Click="btn_open_Click"/>
+        <Button x:Name="btn_save" Margin="90,10,0,90" Content="Сохранить" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="20" Width="65" Grid.Column="1" Click="btn_save_Click"/>
+        <Button x:Name="btn_backup" Content="Сделпть бэкап" Margin="10,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="25" Width="100" Grid.Column="1" Click="btn_backup_Click" />
+        <Button x:Name="btn_restore" Content="Всстановит" Margin="130,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="25" Width="100" Grid.Column="1" Click="btn_restore_Click" />
     </Grid>
 </Window>
